@@ -1,4 +1,11 @@
 package PSsys.Controller;
 
-public class PaymentController {
+import PSsys.Service.PaymentService;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+
+@WebServlet("/payments/*")
+public class PaymentController extends HttpServlet {
+    private PaymentService paymentService;
 }
