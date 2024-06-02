@@ -10,5 +10,8 @@
         <module name="ApiPeriodicals" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="PeriodicalSubscriptionSystemCreation" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
