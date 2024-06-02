@@ -4,23 +4,57 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-        <servlet>
-            <servlet-name>User</servlet-name>
-            <servlet-class>PSsys.Controller.UserController</servlet-class>
-        </servlet>
+    <servlet>
+        <servlet-name>Publications</servlet-name>
+        <servlet-class>application.controller.PublicationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Publications</servlet-name>
+        <url-pattern>/publications</url-pattern>
+    </servlet-mapping>
 
-        <servlet>
-            <servlet-name>Test</servlet-name>
-            <servlet-class>TestServlet</servlet-class>
-        </servlet>
+    <servlet>
+        <servlet-name>Payments</servlet-name>
+        <servlet-class>application.controller.PaymentController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Payments</servlet-name>
+        <url-pattern>/payments</url-pattern>
+    </servlet-mapping>
 
-        <servlet-mapping>
-            <servlet-name>Test</servlet-name>
-            <url-pattern>/test</url-pattern>
-        </servlet-mapping>
+    <servlet>
+        <servlet-name>Subscriptions</servlet-name>
+        <servlet-class>application.controller.SubscriptionController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Subscriptions</servlet-name>
+        <url-pattern>/subscriptions</url-pattern>
+    </servlet-mapping>
 
-        <servlet-mapping>
-            <servlet-name>User</servlet-name>
-            <url-pattern>/users</url-pattern>
-        </servlet-mapping>
+    <servlet>
+        <servlet-name>Auth</servlet-name>
+        <servlet-class>application.controller.AuthController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Auth</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>User</servlet-name>
+        <servlet-class>application.controller.UserController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>User</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>application.middleware.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>
