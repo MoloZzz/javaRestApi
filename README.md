@@ -26,4 +26,8 @@ Create publication json:
 "description": "",
 "price": 4.00
 }
-Create user json: 
+Create payment json:
+{
+"userId": 5,
+"publicationId": 1
+}
