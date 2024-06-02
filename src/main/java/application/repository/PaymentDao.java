@@ -10,5 +10,6 @@ public interface PaymentDao {
     List<Payment> findAll();
     void save(Payment payment);
     void update(Payment payment);
+    List<Payment> findBySubscriptionId(int subscriptionId);
     void delete(int id);
 }

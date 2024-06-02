@@ -20,7 +20,7 @@ public class PaymentService {
         return paymentDao.findAll();
     }
 
-    public void save(Payment payment) {
+    public void create(Payment payment) {
         paymentDao.save(payment);
     }
 
@@ -30,5 +30,9 @@ public class PaymentService {
 
     public void delete(int id) {
         paymentDao.delete(id);
+    }
+
+    public List<Payment> findBySubscriptionId(int subscriptionId) {
+        return paymentDao.findBySubscriptionId(subscriptionId);
     }
 }
