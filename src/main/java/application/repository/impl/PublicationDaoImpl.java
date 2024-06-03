@@ -14,13 +14,33 @@ import java.util.ArrayList;
 import java.util.List;
 import application.model.Publication;
 
-public class PublicationDaoImpl {
+public class PublicationDaoImpl implements PublicationDao{
     private Connection connection;
 
     public PublicationDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+    @Override
+    public List<Publication> findByUserId(int userId) {
+        List<Publication> publications = new ArrayList<>();
+        String sql = "SELECT p.* FROM publications p JOIN subscriptions s ON s.publication_id = p.id WHERE s.user_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Publication publication = new Publication();
+                publication.setId(rs.getInt("id"));
+                publication.setTitle(rs.getString("title"));
+                publication.setDescription(rs.getString("description"));
+                publication.setPrice(rs.getBigDecimal("price"));
+                publications.add(publication);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return publications;
+    }
     public List<Publication> findAll() {
         List<Publication> publications = new ArrayList<>();
         String sql = "SELECT * FROM publications";

@@ -11,6 +11,7 @@ C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\mod
 C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\dto\subscription\InfoSubscriptionDto.java
 C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\repository\impl\PaymentDaoImpl.java
 C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\repository\PaymentDao.java
+C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\dto\payment\CreatePaymentDto.java
 C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\repository\impl\PublicationDaoImpl.java
 C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\utils\LogUtil.java
 C:\Users\megao\Desktop\university\Java\javaRestApi\src\main\java\application\config\DatabaseConnection.java

@@ -35,4 +35,8 @@ public class PaymentService {
     public List<Payment> findBySubscriptionId(int subscriptionId) {
         return paymentDao.findBySubscriptionId(subscriptionId);
     }
+
+    public List<Payment> findByUserId(int userId) {
+        return paymentDao.findByUserId(userId);
+    }
 }

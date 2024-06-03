@@ -31,6 +31,26 @@ public class PaymentDaoImpl implements PaymentDao {
     }
 
     @Override
+    public List<Payment> findByUserId(int userId) {
+        List<Payment> payments = new ArrayList<>();
+        String sql = "SELECT * FROM payments p JOIN subscriptions s ON p.subscription_id = s.id WHERE s.user_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Payment payment = new Payment();
+                payment.setId(rs.getInt("id"));
+                payment.setSubscriptionId(rs.getInt("subscription_id"));
+                payment.setAmount(rs.getBigDecimal("amount"));
+                payment.setPaymentDate(rs.getDate("payment_date").toLocalDate());
+                payments.add(payment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return payments;
+    }
+    @Override
     public List<Payment> findAll() {
         List<Payment> payments = new ArrayList<>();
         String query = "SELECT * FROM payments";
