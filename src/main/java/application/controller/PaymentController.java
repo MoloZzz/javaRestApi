@@ -35,14 +35,31 @@ public class PaymentController extends HttpServlet {
 
         String idParam = req.getParameter("id");
         String subscriptionIdParam = req.getParameter("subscriptionId");
+        String userIdParam = req.getParameter("userId");
 
-        if (idParam != null) {
-            handleGetById(resp, idParam);
-        } else if (subscriptionIdParam != null) {
-            handleGetBySubscriptionId(resp, subscriptionIdParam);
-        } else {
-            handleGetAllPayments(resp);
+        try {
+            if (idParam != null) {
+                handleGetById(resp, idParam);
+            } else if (subscriptionIdParam != null) {
+                handleGetBySubscriptionId(resp, subscriptionIdParam);
+            } else if (userIdParam != null) {
+                handleGetByUserId(resp, userIdParam);
+            } else {
+                handleGetAllPayments(resp);
+            }
+        } catch (NumberFormatException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"error\": \"Invalid ID format\"}");
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"error\": \"Error retrieving payments: " + e.getMessage() + "\"}");
         }
+    }
+
+    private void handleGetByUserId(HttpServletResponse resp, String userIdStr) throws IOException {
+        int userId = Integer.parseInt(userIdStr);
+        List<Payment> payments = paymentService.findByUserId(userId);
+        resp.getWriter().write(objectMapper.writeValueAsString(payments));
     }
 
     private void handleGetById(HttpServletResponse resp, String idParam) throws IOException {

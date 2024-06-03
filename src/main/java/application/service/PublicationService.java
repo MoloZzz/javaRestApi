@@ -15,6 +15,9 @@ public class PublicationService {
     public List<Publication> findAll() {
         return publicationDao.findAll();
     }
+    public List<Publication> findByUserId(int userId) {
+        return publicationDao.findByUserId(userId);
+    }
 
     public Publication findById(int id) {
         return publicationDao.findById(id);

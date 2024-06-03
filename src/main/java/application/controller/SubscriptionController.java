@@ -32,7 +32,6 @@ public class SubscriptionController extends HttpServlet {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idParam = req.getParameter("id");
         String userIdParam = req.getParameter("userId");
@@ -40,29 +39,13 @@ public class SubscriptionController extends HttpServlet {
 
         try {
             if (idParam != null) {
-                int id = Integer.parseInt(idParam);
-                Subscription subscription = subscriptionService.findById(id);
-                if (subscription != null) {
-                    resp.setContentType("application/json");
-                    resp.getWriter().write(objectMapper.writeValueAsString(subscription));
-                } else {
-                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    resp.getWriter().write("Subscription not found");
-                }
+                handleGetById(req, resp, idParam);
             } else if (userIdParam != null) {
-                int userId = Integer.parseInt(userIdParam);
-                List<Subscription> subscriptions = subscriptionService.findByUserId(userId);
-                resp.setContentType("application/json");
-                resp.getWriter().write(objectMapper.writeValueAsString(subscriptions));
+                handleGetByUserId(req, resp, userIdParam);
             } else if (publicationIdParam != null) {
-                int publicationId = Integer.parseInt(publicationIdParam);
-                List<Subscription> subscriptions = subscriptionService.findByPublicationId(publicationId);
-                resp.setContentType("application/json");
-                resp.getWriter().write(objectMapper.writeValueAsString(subscriptions));
+                handleGetByPublicationId(req, resp, publicationIdParam);
             } else {
-                List<Subscription> subscriptions = subscriptionService.findAll();
-                resp.setContentType("application/json");
-                resp.getWriter().write(objectMapper.writeValueAsString(subscriptions));
+                handleGetAll(req, resp);
             }
         } catch (NumberFormatException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -71,6 +54,39 @@ public class SubscriptionController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("Error retrieving subscriptions: " + e.getMessage());
         }
+    }
+
+    private void handleGetById(HttpServletRequest req, HttpServletResponse resp, String idParam) throws IOException, SQLException {
+        int id = Integer.parseInt(idParam);
+        Subscription subscription = subscriptionService.findById(id);
+        if (subscription != null) {
+            writeJsonResponse(resp, subscription);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.getWriter().write("Subscription not found");
+        }
+    }
+
+    private void handleGetByUserId(HttpServletRequest req, HttpServletResponse resp, String userIdParam) throws IOException, SQLException {
+        int userId = Integer.parseInt(userIdParam);
+        List<Subscription> subscriptions = subscriptionService.findByUserId(userId);
+        writeJsonResponse(resp, subscriptions);
+    }
+
+    private void handleGetByPublicationId(HttpServletRequest req, HttpServletResponse resp, String publicationIdParam) throws IOException, SQLException {
+        int publicationId = Integer.parseInt(publicationIdParam);
+        List<Subscription> subscriptions = subscriptionService.findByPublicationId(publicationId);
+        writeJsonResponse(resp, subscriptions);
+    }
+
+    private void handleGetAll(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+        List<Subscription> subscriptions = subscriptionService.findAll();
+        writeJsonResponse(resp, subscriptions);
+    }
+
+    private void writeJsonResponse(HttpServletResponse resp, Object data) throws IOException {
+        resp.setContentType("application/json");
+        resp.getWriter().write(objectMapper.writeValueAsString(data));
     }
 
     @Override
