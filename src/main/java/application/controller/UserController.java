@@ -31,7 +31,6 @@ public class UserController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
 
         String userIdParam = req.getParameter("id");
         String usernameParam = req.getParameter("username");
