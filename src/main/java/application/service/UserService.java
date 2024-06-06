@@ -3,8 +3,10 @@ package application.service;
 import application.dto.user.CreateUserDto;
 import application.model.User;
 import application.repository.UserDao;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
+import java.util.Objects;
 
 public class UserService {
     private UserDao userDao;
@@ -26,7 +28,14 @@ public class UserService {
     }
 
     public void create(CreateUserDto user) {
-        userDao.save(user);
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        CreateUserDto newUser = new CreateUserDto();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(hashedPassword);
+        newUser.setEmail(user.getEmail());
+        String userRole = user.getRole();
+        newUser.setRole(userRole != null ? userRole : "user");
+        userDao.save(newUser);
     }
 
     public void update(User user) {
@@ -36,5 +45,14 @@ public class UserService {
     public void delete(int id) {
         userDao.delete(id);
     }
+
+    public User authenticateUser(String username, String password) {
+        User user = userDao.findByUsername(username);
+        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+            return user;
+        }
+        return null;
+    }
+
 }
 

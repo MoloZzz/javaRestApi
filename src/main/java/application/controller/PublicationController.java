@@ -31,29 +31,46 @@ public class PublicationController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
         String idParam = req.getParameter("id");
+        String userIdParam = req.getParameter("userId");
 
-        if (idParam == null) {
-            List<Publication> publications = publicationService.findAll();
-            PrintWriter out = resp.getWriter();
-            objectMapper.writeValue(out, publications);
-        } else {
-            try {
-                int id = Integer.parseInt(idParam);
-                Publication publication = publicationService.findById(id);
-                if (publication != null) {
-                    PrintWriter out = resp.getWriter();
-                    objectMapper.writeValue(out, publication);
-                } else {
-                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                    resp.getWriter().write("Publication not found");
-                }
-            } catch (NumberFormatException e) {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.getWriter().write("Invalid publication ID");
+        try {
+            if (idParam != null) {
+                handleGetById(resp, idParam);
+            } else if (userIdParam != null) {
+                handleGetByUserId(resp, userIdParam);
+            } else {
+                handleGetAllPublications(resp);
             }
+        } catch (NumberFormatException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"error\": \"Invalid ID format\"}");
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            resp.getWriter().write("{\"error\": \"Error retrieving publications: " + e.getMessage() + "\"}");
         }
+    }
+
+    private void handleGetById(HttpServletResponse resp, String idStr) throws IOException {
+        int id = Integer.parseInt(idStr);
+        Publication publication = publicationService.findById(id);
+        if (publication != null) {
+            resp.getWriter().write(objectMapper.writeValueAsString(publication));
+        } else {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.getWriter().write("{\"error\": \"Publication not found\"}");
+        }
+    }
+
+    private void handleGetByUserId(HttpServletResponse resp, String userIdStr) throws IOException {
+        int userId = Integer.parseInt(userIdStr);
+        List<Publication> publications = publicationService.findByUserId(userId);
+        resp.getWriter().write(objectMapper.writeValueAsString(publications));
+    }
+
+    private void handleGetAllPublications(HttpServletResponse resp) throws IOException {
+        List<Publication> publications = publicationService.findAll();
+        resp.getWriter().write(objectMapper.writeValueAsString(publications));
     }
 
     @Override
