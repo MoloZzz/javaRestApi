@@ -4,13 +4,11 @@ import application.utils.Logging.StatusLoggingHttpServletResponseWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebFilter("/*")
 public class LoggingFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(LoggingFilter.class);
 
