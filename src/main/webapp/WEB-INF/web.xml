@@ -40,14 +40,7 @@
         <url-pattern>/users</url-pattern>
     </servlet-mapping>
 
-    <filter>
-        <filter-name>EncodingFilter</filter-name>
-        <filter-class>application.middleware.EncodingFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>EncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+
 
     <filter>
         <filter-name>LoggingFilter</filter-name>
@@ -57,7 +50,22 @@
         <filter-name>LoggingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>application.middleware.CorsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>application.middleware.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>Auth0Filter</filter-name>
         <filter-class>application.middleware.Auth0Filter</filter-class>
@@ -92,4 +100,6 @@
         <filter-name>ErrorHandlingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+
 </web-app>
